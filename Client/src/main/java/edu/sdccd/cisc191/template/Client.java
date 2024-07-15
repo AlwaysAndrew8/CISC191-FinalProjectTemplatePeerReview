@@ -21,29 +21,35 @@ public class Client {
     private PrintWriter out;
     private BufferedReader in;
 
+    // Starts the connection to the server with the specified IP and port.
     public void startConnection(String ip, int port) throws IOException {
         clientSocket = new Socket(ip, port);
         out = new PrintWriter(clientSocket.getOutputStream(), true);
         in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
     }
 
+    // Sends a request to the server and receives a response.
+
     public CustomerResponse sendRequest() throws Exception {
         out.println(CustomerRequest.toJSON(new CustomerRequest(1)));
         return CustomerResponse.fromJSON(in.readLine());
     }
 
+    // Stops the connection to the server
     public void stopConnection() throws IOException {
         in.close();
         out.close();
         clientSocket.close();
     }
+
+    // Main method to start the client
     public static void main(String[] args) {
         Client client = new Client();
         try {
             client.startConnection("127.0.0.1", 4444);
             System.out.println(client.sendRequest().toString());
             client.stopConnection();
-        } catch(Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

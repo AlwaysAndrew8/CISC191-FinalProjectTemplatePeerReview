@@ -13,12 +13,14 @@ import java.io.*;
  * as it is received, rather than creating a separate thread
  * to process the connection.
  */
+
 public class Server {
     private ServerSocket serverSocket;
     private Socket clientSocket;
     private PrintWriter out;
     private BufferedReader in;
 
+    // Starts the server on the specified port
     public void start(int port) throws Exception {
         serverSocket = new ServerSocket(port);
         clientSocket = serverSocket.accept();
@@ -27,12 +29,16 @@ public class Server {
 
         String inputLine;
         while ((inputLine = in.readLine()) != null) {
+            // Convert the JSON string that's received into a CustomerRequest object
             CustomerRequest request = CustomerRequest.fromJSON(inputLine);
+            // Create a response object
             CustomerResponse response = new CustomerResponse(request.getId(), "Jane", "Doe");
+            // Send the JSON string of the response object to the client
             out.println(CustomerResponse.toJSON(response));
         }
     }
 
+    // Stops the server and closes all connections.
     public void stop() throws IOException {
         in.close();
         out.close();
@@ -40,6 +46,7 @@ public class Server {
         serverSocket.close();
     }
 
+    // Main method to start the server.
     public static void main(String[] args) {
         Server server = new Server();
         try {
