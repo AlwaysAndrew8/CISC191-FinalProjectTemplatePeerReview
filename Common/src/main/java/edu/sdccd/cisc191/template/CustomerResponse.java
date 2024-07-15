@@ -3,6 +3,7 @@ package edu.sdccd.cisc191.template;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+// CustomerResponse class represents a response for customer data.
 public class CustomerResponse {
     private Integer id;
     private String firstName;
@@ -10,14 +11,26 @@ public class CustomerResponse {
 
     @JsonIgnore
     private static final ObjectMapper objectMapper = new ObjectMapper();
+
+    // Converts a CustomerResponse object to a JSON string.
     public static String toJSON(CustomerResponse customer) throws Exception {
         return objectMapper.writeValueAsString(customer);
     }
+
+    // Converts a JSON string to a CustomerResponse object
     public static CustomerResponse fromJSON(String input) throws Exception{
         return objectMapper.readValue(input, CustomerResponse.class);
     }
+
     protected CustomerResponse() {}
 
+    /**
+     * Constructs a CustomerResponse with the following.
+     *
+     * @param id the customer's ID
+     * @param firstName the customer's first name
+     * @param lastName the customer's last name
+     */
     public CustomerResponse(Integer id, String firstName, String lastName) {
         this.id = id;
         this.firstName = firstName;
@@ -31,6 +44,7 @@ public class CustomerResponse {
                 id, firstName, lastName);
     }
 
+    // Getter and Setter methods
     public Integer getId() {
         return id;
     }
